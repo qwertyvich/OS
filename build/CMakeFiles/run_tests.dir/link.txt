@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/run_tests.dir/test/Tests.cpp.o CMakeFiles/run_tests.dir/src/multiply.cpp.o -o run_tests  lib/libgtest.a lib/libgtest_main.a lib/libgtest.a 
