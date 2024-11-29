@@ -5,7 +5,6 @@ set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 include_directories(${PROJECT_SOURCE_DIR}/include)
 add_executable(lab2 main.cpp src/multiply.cpp)
-
 add_subdirectory(googletest)
 add_executable(run_tests test/Tests.cpp src/multiply.cpp) 
 target_link_libraries(run_tests gtest gtest_main)

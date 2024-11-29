@@ -1,9 +1,5 @@
-// /include/multiply.hpp
-
 #pragma once
 #include "complex.hpp"
-
-// Объявление функций (без реализации)
 void fillMatrix(Complex* matrix, int rows, int cols);
 void printMatrix(const Complex* matrix, int rows, int cols);
 void* multiplyRows(void* arg);

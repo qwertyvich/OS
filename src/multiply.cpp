@@ -61,7 +61,7 @@ void multiplyMatrices(const Complex* A, const Complex* B, Complex* C, int A_rows
         threadData[i].startRow = i * rowsPerThread;
         threadData[i].endRow = (i + 1) * rowsPerThread;
         if (i == numThreads - 1) {
-            threadData[i].endRow = A_rows; // Последний поток обрабатывает остаток
+            threadData[i].endRow = A_rows; 
         }
         pthread_create(&threads[i], nullptr, multiplyRows, &threadData[i]);
     }
