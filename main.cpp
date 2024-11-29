@@ -1,7 +1,7 @@
 #include "multiply.hpp"
 
 int main(int argc, char** argv) {
-    int numThreads = 2;  // Количество потоков по умолчанию
+    int numThreads = 2;  
     if (argc > 1) {
         numThreads = atoi(argv[1]);
     }
@@ -20,7 +20,6 @@ int main(int argc, char** argv) {
     std::cout << "Матрица B:" << std::endl;
     printMatrix(B, B_rows, B_cols);
 
-    // Измеряем время выполнения
     clock_t start = clock();
     multiplyMatrices(A, B, C, A_rows, A_cols, B_cols, numThreads);
     clock_t end = clock();
