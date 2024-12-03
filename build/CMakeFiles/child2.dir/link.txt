@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/child2.dir/src/child2.cpp.o CMakeFiles/child2.dir/src/functions.cpp.o -o child2 
