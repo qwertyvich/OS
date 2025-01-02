@@ -1,59 +1,57 @@
 #include "functions.hpp"
 #include <iostream>
 #include <string>
-#include <fcntl.h>
-#include <sys/mman.h>
 #include <unistd.h>
 #include <semaphore.h>
+#include <sys/mman.h>
+#include <fcntl.h>
+#include <cstdlib>
 
-using namespace std;
-
-int main() {
-    // Открываем shared memory и семафор для child1
-    int shm_fd = OpenSharedMemory(SHM_CHILD1);
-    sem_t* sem = OpenSemaphore(SEM_CHILD1);
-
-    // Открываем файл для записи
-    string file1 = "out1.txt";
-    int file_descr = open(file1.c_str(), O_WRONLY | O_CREAT | O_APPEND, 0777);
-    if (file_descr == -1) {
-        perror(("Ошибка открытия файла " + file1).c_str());
+int main(int argc, char* argv[]) {
+    // Ожидаем 3 аргумента:
+    //   argv[1] - имя семафора родителя -> child1
+    //   argv[2] - имя семафора child1 -> родитель
+    //   argv[3] - имя shm
+    if (argc < 4) {
+        std::cerr << "Usage: child1 <semParent> <semChild> <shmName>\n";
         exit(EXIT_FAILURE);
     }
 
-    while (true) {
-        // Ожидаем сигнал от родителя
-        sem_wait(sem);
+    const char* semParentName = argv[1];
+    const char* semChildName  = argv[2];
+    const char* shmName       = argv[3];
 
-        // Читаем строку из shared memory
-        string input = ReadFromSharedMemory(shm_fd);
-
-        // Если получена пустая строка, завершаем работу
-        if (input.empty()) {
-            break;
-        }
-
-        // Удаляем гласные
-        string output = removeVowels(input);
-
-        // Записываем результат в файл
-        if (write(file_descr, output.c_str(), output.size()) == -1) {
-            perror("Ошибка записи в файл");
-            break;
-        }
-        if (write(file_descr, "\n", 1) == -1) {
-            perror("Ошибка записи в файл");
-            break;
-        }
-
-        // Выводим результат в стандартный вывод
-        cout << "Child1: " << output << endl;
+    sem_t* semParent = sem_open(semParentName, 0);
+    sem_t* semChild  = sem_open(semChildName, 0);
+    if (semParent == SEM_FAILED || semChild == SEM_FAILED) {
+        std::cerr << "child1: sem_open failed\n";
+        exit(EXIT_FAILURE);
     }
 
-    // Закрываем ресурсы
-    close(file_descr);
-    close(shm_fd);
-    sem_close(sem);
+    int shmFd = shm_open(shmName, O_RDWR, 0666);
+    if (shmFd == -1) {
+        std::cerr << "child1: shm_open failed\n";
+        exit(EXIT_FAILURE);
+    }
+
+    char* addr = MapSharedMemory(MMAP_SIZE, shmFd);
+
+    while (true) {
+        sem_wait(semParent);  // ждём "разрешения" от родителя
+
+        if (addr[0] == '\0') { // пустая строка -> конец
+            break;
+        }
+        std::string input(addr);
+        std::string output = removeVowels(input);
+        std::cout << output << std::endl;  // на stdout, перенаправленный в нужный файл
+        sem_post(semChild); // сообщаем родителю, что обработали
+    }
+
+    munmap(addr, MMAP_SIZE);
+    close(shmFd);
+    sem_close(semParent);
+    sem_close(semChild);
 
     return 0;
 }

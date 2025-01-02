@@ -172,17 +172,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named lab3
+# Target rules for targets named lr3
 
 # Build rule for target.
-lab3: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 lab3
-.PHONY : lab3
+lr3: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 lr3
+.PHONY : lr3
 
 # fast build rule for target.
-lab3/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/lab3.dir/build.make CMakeFiles/lab3.dir/build
-.PHONY : lab3/fast
+lr3/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/lr3.dir/build.make CMakeFiles/lr3.dir/build
+.PHONY : lr3/fast
 
 #=============================================================================
 # Target rules for targets named child1
@@ -211,17 +211,17 @@ child2/fast:
 .PHONY : child2/fast
 
 #=============================================================================
-# Target rules for targets named my_tests
+# Target rules for targets named start_test
 
 # Build rule for target.
-my_tests: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 my_tests
-.PHONY : my_tests
+start_test: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 start_test
+.PHONY : start_test
 
 # fast build rule for target.
-my_tests/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_tests.dir/build.make CMakeFiles/my_tests.dir/build
-.PHONY : my_tests/fast
+start_test/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/start_test.dir/build.make CMakeFiles/start_test.dir/build
+.PHONY : start_test/fast
 
 #=============================================================================
 # Target rules for targets named gmock
@@ -280,7 +280,7 @@ main.o: main.cpp.o
 
 # target to build an object file
 main.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/lab3.dir/build.make CMakeFiles/lab3.dir/main.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/lr3.dir/build.make CMakeFiles/lr3.dir/main.cpp.o
 .PHONY : main.cpp.o
 
 main.i: main.cpp.i
@@ -288,7 +288,7 @@ main.i: main.cpp.i
 
 # target to preprocess a source file
 main.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/lab3.dir/build.make CMakeFiles/lab3.dir/main.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/lr3.dir/build.make CMakeFiles/lr3.dir/main.cpp.i
 .PHONY : main.cpp.i
 
 main.s: main.cpp.s
@@ -296,7 +296,7 @@ main.s: main.cpp.s
 
 # target to generate assembly for a file
 main.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/lab3.dir/build.make CMakeFiles/lab3.dir/main.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/lr3.dir/build.make CMakeFiles/lr3.dir/main.cpp.s
 .PHONY : main.cpp.s
 
 src/child1.o: src/child1.cpp.o
@@ -352,10 +352,10 @@ src/functions.o: src/functions.cpp.o
 
 # target to build an object file
 src/functions.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/lab3.dir/build.make CMakeFiles/lab3.dir/src/functions.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/lr3.dir/build.make CMakeFiles/lr3.dir/src/functions.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/child1.dir/build.make CMakeFiles/child1.dir/src/functions.cpp.o
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/child2.dir/build.make CMakeFiles/child2.dir/src/functions.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_tests.dir/build.make CMakeFiles/my_tests.dir/src/functions.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/start_test.dir/build.make CMakeFiles/start_test.dir/src/functions.cpp.o
 .PHONY : src/functions.cpp.o
 
 src/functions.i: src/functions.cpp.i
@@ -363,10 +363,10 @@ src/functions.i: src/functions.cpp.i
 
 # target to preprocess a source file
 src/functions.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/lab3.dir/build.make CMakeFiles/lab3.dir/src/functions.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/lr3.dir/build.make CMakeFiles/lr3.dir/src/functions.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/child1.dir/build.make CMakeFiles/child1.dir/src/functions.cpp.i
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/child2.dir/build.make CMakeFiles/child2.dir/src/functions.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_tests.dir/build.make CMakeFiles/my_tests.dir/src/functions.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/start_test.dir/build.make CMakeFiles/start_test.dir/src/functions.cpp.i
 .PHONY : src/functions.cpp.i
 
 src/functions.s: src/functions.cpp.s
@@ -374,10 +374,10 @@ src/functions.s: src/functions.cpp.s
 
 # target to generate assembly for a file
 src/functions.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/lab3.dir/build.make CMakeFiles/lab3.dir/src/functions.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/lr3.dir/build.make CMakeFiles/lr3.dir/src/functions.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/child1.dir/build.make CMakeFiles/child1.dir/src/functions.cpp.s
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/child2.dir/build.make CMakeFiles/child2.dir/src/functions.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_tests.dir/build.make CMakeFiles/my_tests.dir/src/functions.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/start_test.dir/build.make CMakeFiles/start_test.dir/src/functions.cpp.s
 .PHONY : src/functions.cpp.s
 
 src/parent.o: src/parent.cpp.o
@@ -385,7 +385,8 @@ src/parent.o: src/parent.cpp.o
 
 # target to build an object file
 src/parent.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/lab3.dir/build.make CMakeFiles/lab3.dir/src/parent.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/lr3.dir/build.make CMakeFiles/lr3.dir/src/parent.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/start_test.dir/build.make CMakeFiles/start_test.dir/src/parent.cpp.o
 .PHONY : src/parent.cpp.o
 
 src/parent.i: src/parent.cpp.i
@@ -393,7 +394,8 @@ src/parent.i: src/parent.cpp.i
 
 # target to preprocess a source file
 src/parent.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/lab3.dir/build.make CMakeFiles/lab3.dir/src/parent.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/lr3.dir/build.make CMakeFiles/lr3.dir/src/parent.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/start_test.dir/build.make CMakeFiles/start_test.dir/src/parent.cpp.i
 .PHONY : src/parent.cpp.i
 
 src/parent.s: src/parent.cpp.s
@@ -401,32 +403,33 @@ src/parent.s: src/parent.cpp.s
 
 # target to generate assembly for a file
 src/parent.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/lab3.dir/build.make CMakeFiles/lab3.dir/src/parent.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/lr3.dir/build.make CMakeFiles/lr3.dir/src/parent.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/start_test.dir/build.make CMakeFiles/start_test.dir/src/parent.cpp.s
 .PHONY : src/parent.cpp.s
 
-tests/tests.o: tests/tests.cpp.o
-.PHONY : tests/tests.o
+tests/test.o: tests/test.cpp.o
+.PHONY : tests/test.o
 
 # target to build an object file
-tests/tests.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_tests.dir/build.make CMakeFiles/my_tests.dir/tests/tests.cpp.o
-.PHONY : tests/tests.cpp.o
+tests/test.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/start_test.dir/build.make CMakeFiles/start_test.dir/tests/test.cpp.o
+.PHONY : tests/test.cpp.o
 
-tests/tests.i: tests/tests.cpp.i
-.PHONY : tests/tests.i
+tests/test.i: tests/test.cpp.i
+.PHONY : tests/test.i
 
 # target to preprocess a source file
-tests/tests.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_tests.dir/build.make CMakeFiles/my_tests.dir/tests/tests.cpp.i
-.PHONY : tests/tests.cpp.i
+tests/test.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/start_test.dir/build.make CMakeFiles/start_test.dir/tests/test.cpp.i
+.PHONY : tests/test.cpp.i
 
-tests/tests.s: tests/tests.cpp.s
-.PHONY : tests/tests.s
+tests/test.s: tests/test.cpp.s
+.PHONY : tests/test.s
 
 # target to generate assembly for a file
-tests/tests.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/my_tests.dir/build.make CMakeFiles/my_tests.dir/tests/tests.cpp.s
-.PHONY : tests/tests.cpp.s
+tests/test.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/start_test.dir/build.make CMakeFiles/start_test.dir/tests/test.cpp.s
+.PHONY : tests/test.cpp.s
 
 # Help Target
 help:
@@ -447,8 +450,8 @@ help:
 	@echo "... gmock_main"
 	@echo "... gtest"
 	@echo "... gtest_main"
-	@echo "... lab3"
-	@echo "... my_tests"
+	@echo "... lr3"
+	@echo "... start_test"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
@@ -464,9 +467,9 @@ help:
 	@echo "... src/parent.o"
 	@echo "... src/parent.i"
 	@echo "... src/parent.s"
-	@echo "... tests/tests.o"
-	@echo "... tests/tests.i"
-	@echo "... tests/tests.s"
+	@echo "... tests/test.o"
+	@echo "... tests/test.i"
+	@echo "... tests/test.s"
 .PHONY : help
 
 
