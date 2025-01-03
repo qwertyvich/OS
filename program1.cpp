@@ -15,7 +15,7 @@ int main() {
         std::cin >> command;
 
         if (command == 3) {
-            // Выход
+            // выход
             std::cout << "Завершение работы.\n";
             break;
         }
