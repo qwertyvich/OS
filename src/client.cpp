@@ -6,7 +6,7 @@
 #include "../include/manage_zmq.hpp"
 #include <cstdlib>
 
-// export PROGRAM_PATH="/mnt/c/Users/user/Desktop/Labs/os/lr5-2/build/server"
+// export PROGRAM_PATH="/mnt/c/Users/user/Desktop/Labs/os/lr5/build/server"
 
 int main() {
     std::set<int> Nodes;
