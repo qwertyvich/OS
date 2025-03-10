@@ -12,12 +12,13 @@ int main(int argc, char **argv) {
         perror("Not enough arguments");
         exit(EXIT_FAILURE);
     }
-
     int nodeId = atoi(argv[1]);
     int parentPort = atoi(argv[2]);
     Node task(nodeId, parentPort);
-    std::string programPath = getenv("PROGRAM_PATH");
-
+    Bind(&task.parent, nodeId);
+    char* programPathC = getenv("PROGRAM_PATH");
+    std::string programPath = (programPathC ? programPathC : "");
+    
     while (true) {
         std::string message;
         if (auto msg = ReceiveMessage(&(task.parent)); msg.has_value()) {
@@ -28,7 +29,6 @@ int main(int argc, char **argv) {
         std::istringstream request(message);
         std::string command;
         request >> command;
-
         if (command == "create") {
             int idChild;
             request >> idChild;
@@ -57,16 +57,18 @@ int main(int argc, char **argv) {
             request >> targetId;
             std::string name;
             request >> name;
-            if (request.peek() == ' ') {
-                int value;
-                request >> value;
+            std::string remainder;
+            std::getline(request, remainder);
+            std::istringstream iss(remainder);
+            int value;
+            if (iss >> value) { // команда сохранения
                 task.setKeyValue(name, value);
                 std::string to_send = "Ok:" + std::to_string(targetId);
                 SendMessage(&task.parent, to_send);
-            } else {
-                auto value = task.getKeyValue(name);
-                if (value.has_value()) {
-                    std::string to_send = "Ok:" + std::to_string(targetId) + ": " + std::to_string(value.value());
+            } else { // команда загрузки
+                auto valueOpt = task.getKeyValue(name);
+                if (valueOpt.has_value()) {
+                    std::string to_send = "Ok:" + std::to_string(targetId) + ": " + std::to_string(valueOpt.value());
                     SendMessage(&task.parent, to_send);
                 } else {
                     std::string to_send = "Ok:" + std::to_string(targetId) + ": '" + name + "' not found";
@@ -74,7 +76,10 @@ int main(int argc, char **argv) {
                 }
             }
         } else if (command == "heartbeat") {
-            // не обрабатываем
+            int senderId;
+            request >> senderId;  // Используем 'request', а не 'iss'
+            task.updateHeartbeat(senderId);
+            SendMessage(&task.parent, "Ok");
         } else if (command == "kill") {
             std::string ans = task.Kill();
             ans = std::to_string(task.id) + " " + ans;

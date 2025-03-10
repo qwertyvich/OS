@@ -1,40 +1,47 @@
-
 #include <set>
 #include <iostream>
 #include <sstream>
 #include <memory>
 #include "../include/tree.hpp"
 #include "../include/manage_zmq.hpp"
+#include <cstdlib>
 
-// Экспорт пути к программе сервера
-// export PROGRAM_PATH="/mnt/c/Users/user/Desktop/Labs/os/lr5/build/server"
+// export PROGRAM_PATH="/mnt/c/Users/user/Desktop/Labs/os/lr5-2/build/server"
 
 int main() {
     std::set<int> Nodes;
-    std::string programPath = getenv("PROGRAM_PATH");
+    char* programPathC = getenv("PROGRAM_PATH");
+    if (!programPathC) {
+        std::cerr << "Error: PROGRAM_PATH environment variable not set" << std::endl;
+        return 1;
+    }
+    std::string programPath = programPathC;
     Node task(-1);
     Nodes.insert(-1);
     std::string command;
     while (std::cin >> command) {
         if (command == "create") {
-            //проверяется, является ли указанный родитель управляющим узлом
-            // (с id = –1) или уже существующим вычислительным узлом.
             int idChild, idParent;
             std::cin >> idChild >> idParent;
             if (Nodes.find(idChild) != Nodes.end()) {
                 std::cout << "Error: Already exists" << std::endl;
             } else if (Nodes.find(idParent) == Nodes.end()) {
                 std::cout << "Error: Parent not found" << std::endl;
-            } else if (idParent == task.id) { // От управляющего узла (id=-1)
+            } else if (idParent == task.id) { // от управляющего узла
                 std::string ans = task.Create(idChild, programPath);
                 std::cout << ans << std::endl;
                 Nodes.insert(idChild);
-            } else { // От другого узла
+            } else { // пересылаем команду родительскому узлу
                 std::string str = "create " + std::to_string(idChild);
                 std::string ans = task.Send(str, idParent);
                 std::cout << ans << std::endl;
                 Nodes.insert(idChild);
             }
+        }  else if (command == "heartbit") {
+            int newInterval;
+            std::cin >> newInterval;
+            task.SetHeartbeatInterval(newInterval);
+            std::cout << "Ok" << std::endl;
         } else if (command == "ping") {
             int idChild;
             std::cin >> idChild;
@@ -58,17 +65,17 @@ int main() {
                 std::cout << "Error: Not found" << std::endl;
                 continue;
             }
-
             std::string name;
             std::cin >> name;
-
-            if (std::cin.peek() == ' ') { // Сохранение значения
-                int value;
-                std::cin >> value;
+            std::string remainder;
+            std::getline(std::cin, remainder);
+            std::istringstream iss(remainder);
+            int value;
+            if (iss >> value) { // сохранение значения
                 std::string msg = "exec " + std::to_string(id) + " " + name + " " + std::to_string(value);
                 std::string ans = task.Send(msg, id);
                 std::cout << ans << std::endl;
-            } else { // Загрузка значения
+            } else { // загрузка значения
                 std::string msg = "exec " + std::to_string(id) + " " + name;
                 std::string ans = task.Send(msg, id);
                 std::cout << ans << std::endl;
@@ -97,9 +104,12 @@ int main() {
                 }
                 std::cout << ans << std::endl;
             }
+            
         } else if (command == "exit") {
             task.Kill();
             return 0;
         }
+        
     }
+    return 0;
 }

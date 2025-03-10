@@ -2,6 +2,8 @@
 #include <sys/types.h>
 #include <sstream>
 #include "tree.hpp"
+#include <thread>
+#include <chrono>
 
 std::string Node::Ping(int _id) {
     std::string ans = "Ok:0";
@@ -16,7 +18,8 @@ std::string Node::Ping(int _id) {
         }
         {
             std::lock_guard<std::mutex> lock(childrenSocketMutex);
-            if (auto msg_resp = ReceiveMessage(children[_id].get()); msg_resp.has_value() && *msg_resp == "Ok:1") {
+            if (auto msg_resp = ReceiveMessage(children[_id].get());
+                msg_resp.has_value() && *msg_resp == "Ok:1") {
                 ans = *msg_resp;
             }
         }
@@ -26,35 +29,24 @@ std::string Node::Ping(int _id) {
 }
 
 std::string Node::Create(int idChild, const std::string& programPath) {
-    // Вычисляем порт для нового узла по схеме: 4040 + idChild
     int newPort = 4040 + idChild;
     int pid = fork();
+    
     if (pid == 0) {
-        // Дочерний процесс: сразу заменяем образ процесса с помощью execl.
-        std::string programName = programPath.substr(programPath.find_last_of("/") + 1);
+        std::this_thread::sleep_for(std::chrono::milliseconds(300));
         execl(programPath.c_str(),
-              programName.c_str(),
+              programPath.c_str(),
               std::to_string(idChild).c_str(),
               std::to_string(newPort).c_str(),
               nullptr);
-        _exit(1);  // На случай, если execl завершится с ошибкой.
+        _exit(1);
     } else {
-        // Родительский процесс: создаем сокет для общения с дочерним узлом.
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
         auto childSocket = std::make_unique<zmq::socket_t>(context, ZMQ_REQ);
-        std::string address = "tcp://127.0.0.1:" + std::to_string(newPort);
-        try {
-            childSocket->bind(address);
-        } catch (const zmq::error_t& e) {
-            std::cerr << "Bind error: " << e.what() << std::endl;
-            return "Error: cannot bind socket";
-        }
+        Connect(childSocket.get(), newPort);
         children[idChild] = std::move(childSocket);
         childrenPort[idChild] = newPort;
-
-        // Устанавливаем таймаут на отправку.
         children[idChild]->set(zmq::sockopt::sndtimeo, 3000);
-
-        // Отправляем команду "pid" дочернему узлу.
         {
             std::lock_guard<std::mutex> lock(childrenSocketMutex);
             if (!SendMessage(children[idChild].get(), "pid")) {
@@ -137,10 +129,18 @@ void Node::HeartbeatSender() {
     while (running) {
         std::this_thread::sleep_for(std::chrono::milliseconds(heartbeatInterval));
         std::string heartbeatMsg = "heartbeat " + std::to_string(id);
-        // Для управляющего узла (id == -1) не отправляем heartbeat
+        // Отправляем heartbeat каждому дочернему узлу
         for (auto& child : children) {
-            std::lock_guard<std::mutex> lock(childrenSocketMutex);
-            SendMessage(child.second.get(), heartbeatMsg);
+            {
+                std::lock_guard<std::mutex> lock(childrenSocketMutex);
+                if (SendMessage(child.second.get(), heartbeatMsg)) {
+                    // Сразу после отправки ждем ответ, чтобы завершить цикл REQ/REP
+                    auto reply = ReceiveMessage(child.second.get());
+                    if (!reply.has_value()) {
+                        std::cerr << "Heartbeat: no reply from child " << std::endl;
+                    }
+                }
+            }
         }
     }
 }

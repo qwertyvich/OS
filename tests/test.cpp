@@ -1,7 +1,6 @@
 
 
-// Перед запуском тестов убедитесь, что PROGRAM_PATH
-// указывает на исполняемый файл "server":
+
 // export PROGRAM_PATH="/mnt/c/Users/user/Desktop/Labs/os/lr5/build/server"
 #include <gtest/gtest.h>
 #include <set>
