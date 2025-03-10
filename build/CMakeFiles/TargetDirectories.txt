@@ -1,0 +1,5 @@
+/mnt/c/Users/user/Desktop/Labs/os/cp/build/CMakeFiles/mcquzy.dir
+/mnt/c/Users/user/Desktop/Labs/os/cp/build/CMakeFiles/pow2.dir
+/mnt/c/Users/user/Desktop/Labs/os/cp/build/CMakeFiles/pow2_random.dir
+/mnt/c/Users/user/Desktop/Labs/os/cp/build/CMakeFiles/edit_cache.dir
+/mnt/c/Users/user/Desktop/Labs/os/cp/build/CMakeFiles/rebuild_cache.dir

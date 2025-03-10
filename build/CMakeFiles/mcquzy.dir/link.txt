@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/mcquzy.dir/src/mcquzy.cpp.o -o mcquzy 

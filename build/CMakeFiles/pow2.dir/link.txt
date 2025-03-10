@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/pow2.dir/src/pow2.cpp.o -o pow2 
